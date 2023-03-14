@@ -1,9 +1,12 @@
 <template>
-    <div class="entry-title d-flex justify-content-between p-2">
+    <template v-if="entry">
+        
+        <div 
+        class="entry-title d-flex justify-content-between p-2">
         <div>
-            <span class="text-success fs-3 fw-bold">25</span>
-            <span class="text-success fs-3 fw-bold">Julio</span>
-            <span class="text-success fs-3 fw-bold">2023</span>
+            <span class="text-success fs-3 fw-bold">{{day}}</span>
+            <span class="text-success fs-3 fw-bold">{{month}}</span>
+            <span class="text-success fs-3 fw-bold">{{yearDay}}</span>
         </div>
 
         <div>
@@ -19,23 +22,75 @@
     </div>
 
     <hr>
-    <div class="d-flex flex-column px-3 h-75">
-        <textarea placeholder="¿Qué sucedió hoy?"></textarea>
+    <div 
+        class="d-flex flex-column px-3 h-75">
+        <textarea placeholder="¿Qué sucedió hoy?"
+        v-model="entry.text"
+        ></textarea>
     </div>
+
+    <img src="https://picsum.photos/200"
+        class="img-thumbnail"
+        >
+
+    </template>
 
     <Fab
         icon= 'fa-save'
     />
-    <img src="https://picsum.photos/200"
-        class="img-thumbnail"
-        >
 </template>
 
 <script>
+import getDayMonthYear from '../helpers/getDayMonthYear'
 import { defineAsyncComponent } from 'vue'
+import { mapGetters } from 'vuex';
+
 export default {
+    props: {
+        id: {
+            type: String,
+            required: true
+        }
+    },
     components: {
         Fab : defineAsyncComponent(() => import('../components/Fab.vue'))
+    },
+    data() {
+        return {
+            entry: null
+        }
+    },
+    computed: {
+        ...mapGetters('journal', ['getEntryById']),
+        day(){
+            const { day } = getDayMonthYear(this.entry.date)
+            return day
+        },
+        month(){
+            const { month } = getDayMonthYear(this.entry.date)
+            return month
+        },
+        yearDay(){
+            const { yearDay } = getDayMonthYear(this.entry.date)
+            return yearDay
+        },
+    },
+    methods: {
+        loadEntry(){
+            const entry = this.getEntryById(this.id)
+            if(!entry) return this.$router.push({name: 'no-entry'})
+            this.entry = entry
+            console.log(entry);
+        }
+    },
+    created(){
+        this.loadEntry()
+    },
+
+    watch: {
+        id(){
+            this.loadEntry()
+        }
     }
 }
 </script>
