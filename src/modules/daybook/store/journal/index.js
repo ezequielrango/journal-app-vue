@@ -5,7 +5,7 @@ import * as getters from './getters'
 import * as mutations from './mutations'
 
 
-const myCustomModule = {
+const journalModule = {
     namespaced: true,
     actions,
     getters,
@@ -14,4 +14,4 @@ const myCustomModule = {
 }
 
 
-export default myCustomModule
+export default journalModule
