@@ -12,12 +12,18 @@
 </template>
 
 <script>
-
+import {mapActions} from 'vuex'
 import {defineAsyncComponent} from 'vue'
 export default {
     components: {
         Navbar: defineAsyncComponent(() => import('../components/Navbar.vue') ),
         EntryList: defineAsyncComponent(() => import('../components/EntryList.vue') )
+    },
+    methods: {
+        ...mapActions('journal',['loadEntries'])
+    },
+    created(){
+        this.loadEntries()
     }
 }
 </script>
