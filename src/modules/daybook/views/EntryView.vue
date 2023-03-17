@@ -43,14 +43,14 @@
 
     
     <img 
-    v-if="localImage"
-    :src="localImage"
+    v-if="entry.picture"
+    :src="entry.picture"
     class="img-thumbnail"
     >
     
     <img
-        v-else
-         src="https://picsum.photos/200"
+        v-if="localImage"
+         :src=localImage
         class="img-thumbnail"
         >
     </template>
@@ -123,6 +123,8 @@ export default {
         async saveEntry(){
             const picture = await uploadImage(this.file)
 
+            this.entry.picture = picture
+
             if(this.entry.id){
                 await this.updateEntry(this.entry)
             }else{
@@ -131,6 +133,8 @@ export default {
 
                this.$router.push({name: 'entry', params: {id}})
             }
+
+            this.file = null
 
             this.updateEntry(this.entry)
         },
