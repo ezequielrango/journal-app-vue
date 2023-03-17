@@ -8,7 +8,9 @@
             <span class="text-success fs-3 fw-bold">{{month}}</span>
             <span class="text-success fs-3 fw-bold">{{yearDay}}</span>
         </div>
-
+        <input type="file"
+            @change="onSelectedImage"
+        >
         <div>
             <button
                 v-if="entry.id" 
@@ -33,10 +35,18 @@
         ></textarea>
     </div>
 
-    <img src="https://picsum.photos/200"
+    
+    <img 
+    v-if="localImage"
+    :src="localImage"
+    class="img-thumbnail"
+    >
+    
+    <img
+        v-else
+         src="https://picsum.photos/200"
         class="img-thumbnail"
         >
-
     </template>
 
     <Fab 
@@ -64,7 +74,9 @@ export default {
     },
     data() {
         return {
-            entry: null
+            entry: null,
+            localImage : null ,
+            file: null
         }
     },
     computed: {
@@ -117,6 +129,22 @@ export default {
 
             await this.deleteEntry( this.entry.id )
                 this.$router.push({ name: 'no-entry' })
+        },
+        onSelectedImage( $event) {
+          const file = $event.target.files[0]
+          if(!file){
+            this.localImage = null
+            this.file = null
+            return
+          }
+          this.file = file
+          const fr = new FileReader()
+          fr.onload = () => this.localImage = fr.result
+          fr.readAsDataURL(file)
+          
+        },
+        onSelectImage(){
+            
         }
     },
     created(){
