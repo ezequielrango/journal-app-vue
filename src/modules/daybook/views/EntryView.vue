@@ -10,6 +10,9 @@
         </div>
         <input type="file"
             @change="onSelectedImage"
+            ref='imageSelector'
+            v-show = "false"
+            accept= 'image/png, image/jpg'
         >
         <div>
             <button
@@ -20,8 +23,11 @@
                 Borrar
                 <i class="fa fa-trash-alt"></i>
             </button>
-            <button class="btn btn-primary">
-                Borrar
+            <button 
+                class="btn btn-primary"
+                @click="onSelectImage"
+                >
+                Subir foto
                 <i class="fa fa-upload"></i>
             </button>
         </div>
@@ -61,6 +67,7 @@
 import getDayMonthYear from '../helpers/getDayMonthYear'
 import { defineAsyncComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex';
+import uploadImage from '../helpers/uploadImage'
 
 export default {
     props: {
@@ -114,6 +121,8 @@ export default {
 
         },
         async saveEntry(){
+            const picture = await uploadImage(this.file)
+
             if(this.entry.id){
                 await this.updateEntry(this.entry)
             }else{
@@ -144,7 +153,7 @@ export default {
           
         },
         onSelectImage(){
-            
+            this.$refs.imageSelector.click()
         }
     },
     created(){
