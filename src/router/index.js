@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import dayBookRouter from '../modules/daybook/router'
+import authRouter from '../modules/auth/router'
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -19,6 +22,10 @@ const router = createRouter({
     {
       path: '/daybook',
       ...dayBookRouter
+    },
+    {
+      path: '/auth',
+      ...authRouter
     }
   ]
 })
