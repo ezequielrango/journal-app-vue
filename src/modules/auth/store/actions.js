@@ -9,7 +9,12 @@ export const createUser = async({commit}, user) => {
             password,
             returnSecureToken: true
         })
-        console.log(data);
+
+        const {idToken, refreshToken } = data
+
+        const res = await authApi.post(':update', {displayName : name, idToken})
+        console.log(res);
+
         return {ok: true, message: 'sape'}
     } catch (error) {
         console.log(error);
