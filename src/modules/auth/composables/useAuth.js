@@ -5,12 +5,12 @@ const useAuth = () => {
     const store = useStore()
 
     const createUser = async(user) => {
-        console.log(user);
+        const res = await store.dispatch('auth/createUser', user)
+        return res
     }
-
-    return {
+    
+    return{
         createUser
     }
 }
-
 export default useAuth;
