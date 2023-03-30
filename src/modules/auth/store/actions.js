@@ -60,7 +60,6 @@ export const checkAuthentication = async ({commit}) => {
     try {
         
         const data = await authApi.post(':lookUp', {idToken})
-        console.log(data);
         const {displayName, email} = data.users[0]
 
         const user = {
@@ -75,7 +74,7 @@ export const checkAuthentication = async ({commit}) => {
     } catch (error) {
         console.log(error);
         commit('logout')
-        return {ok:false, message: error.response.data.error.message}
+        return {ok:false, message: 'error'}
 
     }
 }
