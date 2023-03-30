@@ -20,5 +20,8 @@ export const getEntryById = ( state ) => ( id = '' ) => {
     return { ...entry } // TODO: prueben
 }
 
+export const clearEntries = (state) => {
+    state.entries = []
+}
 
 
